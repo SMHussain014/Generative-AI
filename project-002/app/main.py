@@ -2,10 +2,10 @@ from fastapi import FastAPI
 
 myApp = FastAPI(
     title="Hello World API", 
-    version="0.0.1",
+    version="0.0.2",
     servers=[
         {
-            "url": "http://Localhost:8000",
+            "url": "http://localhost:8000",
             "description": "Development Server"
         }
     ]

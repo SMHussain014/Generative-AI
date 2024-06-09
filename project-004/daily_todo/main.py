@@ -35,21 +35,28 @@ def get_session():
 # create sequence of transactions
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print("Creating Tables ...")
     create_tables()
     yield
 
 # create FastAPI
 app: FastAPI = FastAPI(
     lifespan = lifespan, 
-    title = "Daily_todo App", 
+    title = "Daily_Todo App", 
     description = "This is a simple Todo App", 
-    version = "0.1.0"
+    version = "0.1.1",
+    servers=[
+        {
+            "url": "http://localhost:8000",
+            "description": "Development Server"
+        }
+    ]
 )
 
 # create decorator
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the daily_todo app"}
+    return {"message": "Welcome to the Daily_Todo App"}
 
 @app.post("/todos/", response_model=Todo)
 async def create_todos(todo: Todo, session: Annotated[Session, Depends(get_session)]):
@@ -64,7 +71,7 @@ async def get_all(session: Annotated[Session, Depends(get_session)]):
     if todos:
         return todos
     else:
-        raise HTTPException(status_code="404", detail="opps! no task found.")
+        raise HTTPException(status_code=404, detail="opps! no task found.")
     
 @app.get("/todos/{id}", response_model=Todo)
 async def get_single_todo(id: int, session: Annotated[Session, Depends(get_session)]):
@@ -72,7 +79,7 @@ async def get_single_todo(id: int, session: Annotated[Session, Depends(get_sessi
     if todo:
         return todo
     else:
-        raise HTTPException(status_code="404", detail="opps! id not found.")
+        raise HTTPException(status_code=404, detail="opps! id not found.")
 
 @app.patch("/todos/{id}")
 async def update_todo():
@@ -90,7 +97,7 @@ async def edit_todo(todo: Todo, id: int, session: Annotated[Session, Depends(get
         session.refresh(existing_todo)
         return existing_todo
     else:
-        raise HTTPException(status_code="404", detail="opps! id not found.")
+        raise HTTPException(status_code=404, detail="opps! id not found.")
 
 @app.delete("/todos/{id}")
 async def del_todo(id: int, session: Annotated[Session, Depends(get_session)]):
@@ -100,8 +107,4 @@ async def del_todo(id: int, session: Annotated[Session, Depends(get_session)]):
         session.commit()
         return {"message": "Task deleted successfully"}
     else:
-        raise HTTPException(status_code="404", detail="opps! id not found.")
-
-# @app.get("/todo/")
-# async def read_todos():
-#     return {"content": "Dummy Todo"}
+        raise HTTPException(status_code=404, detail="opps! id not found.")

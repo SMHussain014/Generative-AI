@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "my-daily-todos"
+version = "0.1.8"
+description = "My Daily Todos App integrated with Kafka & Protobuff"
+authors = ["Syed Muhammad Hussain <hussain.sm014@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.110.0"
+sqlmodel = "^0.0.16"
+uvicorn = {extras = ["standard"], version = "^0.29.0"}
+psycopg = {extras = ["binary"], version = "^3.1.18"}
+pytest = "^8.1.1"
+httpx = "^0.27.0"
+aiokafka = "^0.10.0"
+protobuf = "^5.27.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

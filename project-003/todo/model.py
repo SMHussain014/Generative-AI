@@ -1,9 +1,5 @@
-from sqlmodel import SQLModel, Field, create_engine
+from sqlmodel import SQLModel, Field
 from typing import Optional
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # creating Todo Table
 class Todo(SQLModel, table=True):
@@ -11,9 +7,14 @@ class Todo(SQLModel, table=True):
    name: str = Field(index=True)
    description: str
 
-# creating sever link
-conn_str = os.getenv("DATABASE_URL")
-engine = create_engine(conn_str)
+class TodoCreate(SQLModel):
+   name: str
+   description: str
+
+class TodoResponse(SQLModel):
+   id: int
+   name: str
+   description: str
 
 def create_db():
    SQLModel.metadata.create_all(engine)

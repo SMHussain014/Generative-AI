@@ -1,3 +1,4 @@
+from todo.model import Todo, TodoCreate, TodoResponse
 from sqlmodel import SQLModel, Field, create_engine, Session, select
 from typing import Optional, Annotated
 import os
@@ -6,24 +7,15 @@ from fastapi import FastAPI, Depends
 
 load_dotenv()
 
-# creating Todo Table
-class Todo(SQLModel, table=True):
-   id: Optional[int] = Field(default=None, primary_key=True)
-   name: str = Field(index=True)
-   description: str
-
-class TodoCreate(SQLModel):
-   name: str
-   description: str
-
-class TodoResponse(SQLModel):
-   id: int
-   name: str
-   description: str
-
 # creating sever link
 conn_str = os.getenv("DATABASE_URL")
 engine = create_engine(conn_str)
+
+def create_db():
+   SQLModel.metadata.create_all(engine)
+
+if __name__ == "__main__":
+   create_db()
 
 # creating a session
 def get_data():
@@ -34,7 +26,13 @@ def get_data():
 app: FastAPI = FastAPI(
    title = "Todo App",
    description = "A Simple Todo Application",
-   version = "0.1.0"
+   version = "0.1.0",
+   servers=[
+        {
+            "url": "http://localhost:8000",
+            "description": "Development Server"
+        }
+    ]
 )
 
 # creating CURD
