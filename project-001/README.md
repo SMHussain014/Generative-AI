@@ -31,8 +31,12 @@
 
 # How to add a package in the project
 - `poetry add pytest` and so on... 
+- 'poetry add update package'
+- 'poetry add packages@latest'
 
 # How to run the project in CLI mode
+- `poetry run python app/main.py` and press enter
+or
 - `poetry run python ./app/main.py` and press enter
 
 # How to run the tests in CLI mode
