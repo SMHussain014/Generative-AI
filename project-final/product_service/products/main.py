@@ -9,33 +9,9 @@ from products import settings
 from products.models.product_model import Product, ProductUpdate
 from products.depandencies.product_depandency import get_session, get_kafka_producer
 from products.curd.product_curd import add_new_product, get_all_products, get_product_by_id, delete_product_by_id, update_product_by_id, validate_product_by_id
+from products.producers.product_producer import create_kafka_topic
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
-from aiokafka.admin import AIOKafkaAdminClient, NewTopic
-from aiokafka.errors import TopicAlreadyExistsError, KafkaConnectionError
 from products import products_pb2
-
-MAX_RETRIES = 5
-RETRY_INTERVALS = 10 
-async def create_kafka_topic():
-    admin_client = AIOKafkaAdminClient(bootstrap_servers=str(settings.BOOTSTRAP_SERVER))
-    retries = 0
-    while retries < MAX_RETRIES:
-        try:
-            await admin_client.start()
-            topic_list = [NewTopic(name=str(settings.KAFKA_PRODUCTS_TOPIC), num_partitions=1, replication_factor=1)]
-            try:
-                await admin_client.create_topics(new_topics=topic_list, validate_only=False)
-                print("Topic created successfully!")
-            except TopicAlreadyExistsError:
-                print("Topic already exists")
-            finally:
-                await admin_client.close()
-            return
-        except KafkaConnectionError:
-            retries += 1
-            print(f"Kafka connection failed, retrying {retries}/{MAX_RETRIES} ...")
-            await asyncio.sleep(RETRY_INTERVALS)
-    raise Exception("Failed to connect with kafka broker after serveral reties")
 
 # Now create real time tables with the help of engine
 def create_tables() -> None:
