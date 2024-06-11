@@ -22,10 +22,7 @@ def create_tables() -> None:
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     await create_kafka_topic()
     task1 = asyncio.create_task(
-        consume_products(
-            mytopics1=str(settings.KAFKA_PRODUCTS_TOPIC), 
-            myserver1=str(settings.BOOTSTRAP_SERVER)
-        )
+        consume_products(mytopics=str(settings.KAFKA_PRODUCTS_TOPIC), myserver=str(settings.BOOTSTRAP_SERVER))
     )
     print("Consumer created successfully ...")
     create_tables()

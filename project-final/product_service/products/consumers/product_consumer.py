@@ -6,7 +6,7 @@ from products.curd.product_curd import add_new_product
 from products.depandencies.product_depandency import get_session
 # from sqlmodel import Session
 
-async def consume_products(mytopics1, myserver1):
+async def consume_products(mytopics, myserver):
     consumer = AIOKafkaConsumer(
             str(settings.KAFKA_PRODUCTS_TOPIC), 
             bootstrap_servers=str(settings.BOOTSTRAP_SERVER), 
