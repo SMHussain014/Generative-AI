@@ -1,5 +1,5 @@
 from products import settings
-from sqlmodel import create_engine, Session
+from sqlmodel import create_engine
 
 # create server connection (only one engine for whole application)
 conn_str: str = str(settings.DATABASE_URL).replace("postgresql", "postgresql+psycopg")
@@ -10,8 +10,3 @@ engine = create_engine(
     pool_size=10,
     # echo=True
 )
-
-# create session (separate session for each functionality/transaction)
-def get_session():
-    with Session(engine) as session:
-        yield session
