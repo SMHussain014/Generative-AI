@@ -1,6 +1,7 @@
 from products import settings
 from aiokafka.admin import AIOKafkaAdminClient, NewTopic
 from aiokafka.errors import TopicAlreadyExistsError, KafkaConnectionError
+import asyncio
 
 MAX_RETRIES = 5
 RETRY_INTERVALS = 10 
