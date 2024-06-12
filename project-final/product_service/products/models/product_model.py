@@ -6,10 +6,10 @@ class Product(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True, min_length=5, max_length=30)
     description: str
-    price: int = Field(min_length=3, max_length=8)
+    price: float = Field(min_length=3, max_length=8)
     expiry: str | None = None
     brand: str | None = None
-    weight: int | None = None
+    weight: float | None = None
     category: str # It shall be pre defined by Platform
     sku: str | None = None
     # rating: list["ProductRating"] = Relationship(back_populates="product")

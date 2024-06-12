@@ -6,7 +6,7 @@ conn_str: str = str(settings.DATABASE_URL).replace("postgresql", "postgresql+psy
 engine = create_engine(
     conn_str, 
     connect_args={}, 
-    pool_recycle=300, 
-    pool_size=10,
+    # pool_recycle=300, 
+    # pool_size=10,
     # echo=True
 )
